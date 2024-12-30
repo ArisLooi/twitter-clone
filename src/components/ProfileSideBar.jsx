@@ -5,7 +5,7 @@ export default function ProfileSlideBar({ handleLogout }) {
     return (
         <Col
             sm={2}
-            className="d-flex flex-column justify-content-start alight-items-start bg-light vh-100"
+            className="d-flex flex-column justify-content-start align-items-start bg-light vh-100"
             style={{ position: "sticky", top: 0 }}
         >
             <IconButton className="bi bi-twitter" isTop />
