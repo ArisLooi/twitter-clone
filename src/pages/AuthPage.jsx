@@ -1,4 +1,4 @@
-import { Col, Image, Row, Button, Modal, Form } from "react-bootstrap";
+import { Col, Image, Row, Button, Modal, Form, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import useLocalStorage from "use-local-storage";
@@ -14,6 +14,7 @@ export default function AuthPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [authToken, setAuthToken] = useLocalStorage("authToken", "");
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
@@ -25,11 +26,18 @@ export default function AuthPage() {
 
     const handleSignUp = async (e) => {
         e.preventDefault();
+        setError("");
         try {
             const res = await axios.post(`${url}/signup`, { username, password });
             console.log(res.data);
+            setModalShow(null);
         } catch (error) {
-            console.error(error);
+            if (error.response && error.response.data.message) {
+                setError(error.response.data.message);
+            } else {
+                setError("An error occurred during signup. Please try again");
+            }
+            console.error("SignUp Error: ", error);
         }
     };
 
@@ -39,13 +47,22 @@ export default function AuthPage() {
             const res = await axios.post(`${url}/login`, { username, password });
             if (res.data && res.data.auth === true && res.data.token) {
                 setAuthToken(res.data.token);
+                setModalShow(null);
                 console.log("Login was successful, token saved");
             }
         } catch (error) {
+            if (error.response && error.response.data.message) {
+                setError(error.response.data.message);
+            } else {
+                setError("An error occurred during login. Please try again.")
+            }
             console.error("Login Error: ", error);
         }
     };
-    const handleClose = () => setModalShow(null);
+    const handleClose = () => {
+        setModalShow(null);
+        setError("");
+    }
 
     return (
         <Row>
@@ -79,6 +96,7 @@ export default function AuthPage() {
                                 : "Log in to your account"
                             }
                         </h2>
+                        {error && <Alert variant="danger">{error}</Alert>}
                         <Form
                             className="d-grid gap-2 px-5"
                             onSubmit={modalShow === "SignUp" ? handleSignUp : handleLogin}
