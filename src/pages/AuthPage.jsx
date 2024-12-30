@@ -1,7 +1,8 @@
 import { Col, Image, Row, Button, Modal, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import useLocalStorage from "use-local-storage";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
     const loginImage = "https://sig1.co/img-twitter-1"
@@ -13,6 +14,14 @@ export default function AuthPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [authToken, setAuthToken] = useLocalStorage("authToken", "");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (authToken) {
+            navigate("/profile");
+        }
+    }, [authToken, navigate]);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
