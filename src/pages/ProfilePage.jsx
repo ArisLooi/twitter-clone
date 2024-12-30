@@ -1,7 +1,21 @@
 import { Navbar, Container, Button } from "react-bootstrap";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
 
 export default function ProfilePage() {
-    const handleLogout = () => { };
+    const [authToken, setAuthToken] = useLocalStorage("authToken", "");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!authToken) {
+            navigate("/login");
+        }
+    }, [authToken, navigate]);
+
+    const handleLogout = () => {
+        setAuthToken("");
+    };
 
     return (
         <>
