@@ -1,11 +1,30 @@
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 import { Button, Col, Image, Nav, Row } from "react-bootstrap";
 import ProfilePostCard from "./ProfilePostCard";
 import profile from "../assets/profile.jpg"
 import banner from "../assets/banner.jpg"
 
 export default function ProfileMidBody() {
+    const [posts, setPosts] = useState([]);
     const url = banner
     const pic = profile
+
+    // Fetch posts based on user id
+    const fetchPosts = (userId) => {
+        fetch(
+            `https://7e27c269-897c-43f3-828e-b4868ad585c2-00-2r5fr76a35h0r.pike.replit.dev/posts/user/${userId}`
+        ).then((response) => response.json()).then((data) => setPosts(data)).catch((error) => console.error("Error:", error))
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const userId = decodedToken.id;
+            fetchPosts(userId);
+        }
+    }, []);
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>
@@ -53,7 +72,9 @@ export default function ProfileMidBody() {
                 </Nav.Item>
 
             </Nav>
-            <ProfilePostCard />
+            {posts.map((post) => (
+                <ProfilePostCard key={post.id} content={post.content} />
+            ))}
         </Col>
     )
 }

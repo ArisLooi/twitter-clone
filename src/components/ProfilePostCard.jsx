@@ -16,10 +16,6 @@ export default function ProfilePostCard({ content }) {
                 <Image src={pic} fluid roundedCircle />
             </Col>
 
-            <Col sm={1}>
-                <Image src={pic} fluid roundedCircle />
-            </Col>
-
             <Col>
                 <strong>Aris</strong>
                 <span>@aris.looi · Apr 11</span>
@@ -28,19 +24,20 @@ export default function ProfilePostCard({ content }) {
                     <Button variant="light">
                         <i className="bi bi-chat"></i>
                     </Button>
+                    <Button variant="light">
+                        <i className="bi bi-repeat"></i>
+                    </Button>
+                    <Button variant="light">
+                        <i className="bi bi-heart"></i>
+                    </Button>
+                    <Button variant="light">
+                        <i className="bi bi-graph-up"></i>
+                    </Button>
+                    <Button variant="light">
+                        <i className="bi bi-upload"></i>
+                    </Button>
                 </div>
-                <Button variant="light">
-                    <i className="bi bi-repeat"></i>
-                </Button>
-                <Button variant="light">
-                    <i className="bi bi-heart"></i>
-                </Button>
-                <Button variant="light">
-                    <i className="bi bi-graph-up"></i>
-                </Button>
-                <Button variant="light">
-                    <i className="bi bi-upload"></i>
-                </Button>
+
             </Col>
         </Row>
     )
