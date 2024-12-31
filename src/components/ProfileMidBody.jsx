@@ -24,6 +24,7 @@ export default function ProfileMidBody() {
         const token = localStorage.getItem("authToken");
         if (token) {
             const decodedToken = jwtDecode(token);
+            console.log("Decoded Token:", decodedToken);
             const userId = decodedToken.id;
             fetchPosts(userId);
         }
@@ -31,7 +32,7 @@ export default function ProfileMidBody() {
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>
-            <Image src={url} fluid height />
+            <Image src={url} fluid />
             <br />
             <Image
                 src={pic}
@@ -76,7 +77,7 @@ export default function ProfileMidBody() {
 
             </Nav>
             {posts.length > 0 && posts.map((post) => (
-                <ProfilePostCard key={post.id} content={post.content} />
+                <ProfilePostCard key={post.id} content={post.content} postId={post.id} />
             ))}
         </Col>
     )
