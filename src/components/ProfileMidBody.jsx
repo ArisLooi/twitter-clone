@@ -14,7 +14,10 @@ export default function ProfileMidBody() {
     const fetchPosts = (userId) => {
         fetch(
             `https://7e27c269-897c-43f3-828e-b4868ad585c2-00-2r5fr76a35h0r.pike.replit.dev/posts/user/${userId}`
-        ).then((response) => response.json()).then((data) => setPosts(data)).catch((error) => console.error("Error:", error))
+        )
+            .then((response) => response.json())
+            .then((data) => setPosts(data))
+            .catch((error) => console.error("Error:", error));
     }
 
     useEffect(() => {
@@ -72,7 +75,7 @@ export default function ProfileMidBody() {
                 </Nav.Item>
 
             </Nav>
-            {posts.map((post) => (
+            {posts.length > 0 && posts.map((post) => (
                 <ProfilePostCard key={post.id} content={post.content} />
             ))}
         </Col>
