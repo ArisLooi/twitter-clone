@@ -9,7 +9,7 @@ export default function IconButton({ isTop, className, onClick, text }) {
         margin = "light rounded-pill";
     }
 
-    const iconMargin = text ? "me-3" : " ";
+    const iconMargin = text ? " me-3" : " ";
 
     return (
         <Button variant={margin} onClick={onClick}>

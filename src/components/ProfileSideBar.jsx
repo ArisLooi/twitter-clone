@@ -23,7 +23,7 @@ export default function ProfileSlideBar({ handleLogout }) {
                 text="Logout"
                 onClick={handleLogout}
             />
-            <Button className="rouded-pill w-100 mb-3">Tweet</Button>
+            <Button className="rounded-pill w-100 mb-3">Tweet</Button>
         </Col>
     )
 }

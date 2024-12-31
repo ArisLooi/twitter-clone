@@ -1,7 +1,7 @@
 import { Button, Col, Image, Row } from "react-bootstrap";
 import profile from "../assets/profile.jpg"
 
-export default function ProfilePostCard() {
+export default function ProfilePostCard({ content }) {
     const pic = profile
 
     return (
@@ -23,7 +23,7 @@ export default function ProfilePostCard() {
             <Col>
                 <strong>Aris</strong>
                 <span>@aris.looi · Apr 11</span>
-                <p>Heyyyy</p>
+                <p>{content}</p>
                 <div className="d-flex justify-content-between">
                     <Button variant="light">
                         <i className="bi bi-chat"></i>
