@@ -1,24 +1,19 @@
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
-import { Button, Col, Image, Nav, Row } from "react-bootstrap";
+import { useEffect } from "react";
+import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import ProfilePostCard from "./ProfilePostCard";
-import profile from "../assets/profile.jpg"
+import { fetchPostsByUser } from "../features/posts/postsSlice";
 import banner from "../assets/banner.jpg"
+import profile from "../assets/profile.jpg"
 
 export default function ProfileMidBody() {
-    const [posts, setPosts] = useState([]);
     const url = banner
     const pic = profile
 
-    // Fetch posts based on user id
-    const fetchPosts = (userId) => {
-        fetch(
-            `https://7e27c269-897c-43f3-828e-b4868ad585c2-00-2r5fr76a35h0r.pike.replit.dev/posts/user/${userId}`
-        )
-            .then((response) => response.json())
-            .then((data) => setPosts(data))
-            .catch((error) => console.error("Error:", error));
-    }
+    const dispatch = useDispatch()
+    const posts = useSelector(store => store.posts.posts)
+    const loading = useSelector(store => store.posts.loading)
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
@@ -26,9 +21,9 @@ export default function ProfileMidBody() {
             const decodedToken = jwtDecode(token);
             console.log("Decoded Token:", decodedToken);
             const userId = decodedToken.id;
-            fetchPosts(userId);
+            dispatch(fetchPostsByUser(userId));
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>
@@ -76,6 +71,9 @@ export default function ProfileMidBody() {
                 </Nav.Item>
 
             </Nav>
+            {loading && (
+                <Spinner animation="border" className="ms-3 mt-3" variant="primary" />
+            )}
             {posts.length > 0 && posts.map((post) => (
                 <ProfilePostCard key={post.id} content={post.content} postId={post.id} />
             ))}
