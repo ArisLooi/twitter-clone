@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const BASE_URL = "https://7e27c269-897c-43f3-828e-b4868ad585c2-00-2r5fr76a35h0r.pike.replit.dev"
+const BASE_URL = "https://4622bc0f-9fdb-4271-8edb-7f0aba70f71d-00-sc8pewkfhh93.sisko.replit.dev"
 
 // Async thunk for fetching a user's posts
 export const fetchPostsByUser = createAsyncThunk(
