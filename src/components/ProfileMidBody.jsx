@@ -11,19 +11,18 @@ export default function ProfileMidBody() {
     const url = banner
     const pic = profile
 
-    const dispatch = useDispatch()
     const posts = useSelector(store => store.posts.posts)
     const loading = useSelector(store => store.posts.loading)
 
-    useEffect(() => {
-        const token = localStorage.getItem("authToken");
-        if (token) {
-            const decodedToken = jwtDecode(token);
-            console.log("Decoded Token:", decodedToken);
-            const userId = decodedToken.id;
-            dispatch(fetchPostsByUser(userId));
-        }
-    }, [dispatch]);
+    // useEffect(() => {
+    //     const token = localStorage.getItem("authToken");
+    //     if (token) {
+    //         const decodedToken = jwtDecode(token);
+    //         console.log("Decoded Token:", decodedToken);
+    //         const userId = decodedToken.id;
+    //         dispatch(fetchPostsByUser(userId));
+    //     }
+    // }, [dispatch]);
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>

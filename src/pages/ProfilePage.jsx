@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthProvider"

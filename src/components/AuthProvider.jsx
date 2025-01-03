@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         return auth.onAuthStateChanged((user) => {
+            console.log(user)
             setCurrentUser(user);
             setLoading(false);
         });
@@ -17,8 +18,8 @@ export function AuthProvider({ children }) {
     const value = { currentUser };
 
     return (
-        <AuthContext.Provide value={value}>
+        <AuthContext.Provider value={value}>
             {!loading && children}
-        </AuthContext.Provide>
+        </AuthContext.Provider>
     )
 }
