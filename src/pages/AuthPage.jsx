@@ -1,62 +1,40 @@
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, } from "firebase/auth";
 import { Col, Image, Row, Button, Modal, Form, Alert } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import useLocalStorage from "use-local-storage";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../components/AuthProvider";
 
 export default function AuthPage() {
     const loginImage = "https://sig1.co/img-twitter-1"
-    const url = "https://f2dad5a2-08f3-4cda-8232-fdab88095201-00-16bi142dlukep.pike.replit.dev";
-
     const [modalShow, setModalShow] = useState(null);
     const handleShowSignUp = () => setModalShow("SignUp");
     const handleShowLogin = () => setModalShow("Login");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [authToken, setAuthToken] = useLocalStorage("authToken", "");
     const [error, setError] = useState("");
-
     const navigate = useNavigate();
+    const auth = getAuth();
+    const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
-        if (authToken) {
-            navigate("/profile");
-        }
-    }, [authToken, navigate]);
+        if (currentUser) navigate("/profile");
+    }, [currentUser, navigate]);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
-        setError("");
         try {
-            const res = await axios.post(`${url}/signup`, { username, password });
-            console.log(res.data);
-            setModalShow(null);
+            const res = await createUserWithEmailAndPassword(auth, username, password);
+            console.log(res.user);
         } catch (error) {
-            if (error.response && error.response.data.message) {
-                setError(error.response.data.message);
-            } else {
-                setError("An error occurred during signup. Please try again");
-            }
-            console.error("SignUp Error: ", error);
-        }
+            console.error(error);
+        };
     };
-
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post(`${url}/login`, { username, password });
-            if (res.data && res.data.auth === true && res.data.token) {
-                setAuthToken(res.data.token);
-                setModalShow(null);
-                console.log("Login was successful, token saved");
-            }
+            await signInWithEmailAndPassword(auth, username, password);
         } catch (error) {
-            if (error.response && error.response.data.message) {
-                setError(error.response.data.message);
-            } else {
-                setError("An error occurred during login. Please try again.")
-            }
-            console.error("Login Error: ", error);
+            console.error(error);
         }
     };
     const handleClose = () => {
