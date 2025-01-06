@@ -2,17 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
-const BASE_URL = "https://4622bc0f-9fdb-4271-8edb-7f0aba70f71d-00-sc8pewkfhh93.sisko.replit.dev"
-
 // Async thunk for fetching a user's posts
 export const fetchPostsByUser = createAsyncThunk(
     "posts/fetchByUser",
     async (userId) => {
         try {
-            const postRef = collection(db, `users/${userId}/posts`);
+            const postsRef = collection(db, `users/${userId}/posts`);
 
-            const querySnapshot = await getDocs(postRef);
-            const docs = querySnapshot.docs.mao((doc) => ({
+            const querySnapshot = await getDocs(postsRef);
+            const docs = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
@@ -30,10 +28,10 @@ export const savePost = createAsyncThunk(
     "posts/savePost",
     async ({ userId, postContent }) => {
         try {
-            const postRef = collection(db, `users/${userId}/posts`);
+            const postsRef = collection(db, `users/${userId}/posts`);
             console.log(`users/${userId}/posts`);
             // Since no ID is given, Firestore auto generate a unique ID for this new document
-            const newPostRef = doc(postRef);
+            const newPostRef = doc(postsRef);
             console.log(postContent);
             await setDoc(newPostRef, { content: postContent, likes: [] });
             const newPost = await getDoc(newPostRef);

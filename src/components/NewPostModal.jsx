@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { savePost } from "../features/posts/postsSlice";
+import { AuthContext } from "./AuthProvider";
 
 export default function NewPostModal({ show, handleClose }) {
     const [postContent, setPostContent] = useState("");
     const dispatch = useDispatch();
+    const { currentUser } = useContext(AuthContext);
+    const userId = currentUser.uid;
 
     const handleSave = () => {
-        dispatch(savePost(postContent));
+        dispatch(savePost({ userId, postContent }));
         handleClose();
         setPostContent("");
     };
