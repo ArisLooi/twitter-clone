@@ -1,9 +1,9 @@
-import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Button, Col, Image, Nav, Row, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ProfilePostCard from "./ProfilePostCard";
 import { fetchPostsByUser } from "../features/posts/postsSlice";
+import { AuthContext } from "./AuthProvider";
 import banner from "../assets/banner.jpg"
 import profile from "../assets/profile.jpg"
 
@@ -11,18 +11,14 @@ export default function ProfileMidBody() {
     const url = banner
     const pic = profile
 
+    const dispatch = useDispatch();
     const posts = useSelector(store => store.posts.posts)
     const loading = useSelector(store => store.posts.loading)
+    const { currentUser } = useContext(AuthContext);
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("authToken");
-    //     if (token) {
-    //         const decodedToken = jwtDecode(token);
-    //         console.log("Decoded Token:", decodedToken);
-    //         const userId = decodedToken.id;
-    //         dispatch(fetchPostsByUser(userId));
-    //     }
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchPostsByUser(currentUser.uid));
+    }, [dispatch, currentUser]);
 
     return (
         <Col sm={6} className="bg-light" style={{ border: "1px solid lightgrey" }}>
@@ -74,7 +70,7 @@ export default function ProfileMidBody() {
                 <Spinner animation="border" className="ms-3 mt-3" variant="primary" />
             )}
             {posts.length > 0 && posts.map((post) => (
-                <ProfilePostCard key={post.id} content={post.content} postId={post.id} />
+                <ProfilePostCard key={post.id} post={post} />
             ))}
         </Col>
     )
