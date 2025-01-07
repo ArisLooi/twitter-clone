@@ -6,15 +6,22 @@ import { AuthContext } from "./AuthProvider";
 
 export default function NewPostModal({ show, handleClose }) {
     const [postContent, setPostContent] = useState("");
+    const [file, setFile] = useState(null);
     const dispatch = useDispatch();
     const { currentUser } = useContext(AuthContext);
     const userId = currentUser.uid;
 
     const handleSave = () => {
-        dispatch(savePost({ userId, postContent }));
+        dispatch(savePost({ userId, postContent, file }));
         handleClose();
         setPostContent("");
+        setFile(null);
     };
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    }
+
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -28,6 +35,8 @@ export default function NewPostModal({ show, handleClose }) {
                                     rows={3}
                                     onChange={(e) => setPostContent(e.target.value)}
                                 />
+                                <br />
+                                <Form.Control type="file" onChange={handleFileChange} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
