@@ -1,14 +1,19 @@
 import { useContext, useState } from "react";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { likePost, removeLikeFromPost } from "../features/posts/postsSlice"
+import { deletePost, likePost, removeLikeFromPost } from "../features/posts/postsSlice"
 import { AuthContext } from "./AuthProvider";
+import UpdatePostModal from "./UpdatePostModal";
 import profile from "../assets/profile.jpg"
 
 export default function ProfilePostCard({ post }) {
     const { content, id: postId, imageUrl } = post;
     const [likes, setLikes] = useState([]);
     const pic = profile
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const handleShowUpdateModal = () => setShowUpdateModal(true);
+    const handleCloseUpdateModal = () => setShowUpdateModal(false);
+
     const dispatch = useDispatch();
     const { currentUser } = useContext(AuthContext);
     const userId = currentUser.uid;
@@ -29,6 +34,9 @@ export default function ProfilePostCard({ post }) {
         dispatch(removeLikeFromPost({ userId, postId }));
     }
 
+    const handleDelete = () => {
+        dispatch(deletePost({ userId, postId }));
+    };
 
     return (
         <Row
@@ -67,6 +75,14 @@ export default function ProfilePostCard({ post }) {
                     <Button variant="light">
                         <i className="bi bi-upload"></i>
                     </Button>
+                    <Button variant="light">
+                        <i className="bi bi-pencil-square" onClick={handleShowUpdateModal}></i>
+                    </Button>
+                    <Button variant="light">
+                        <i className="bi bi-trash" onClick={handleDelete}></i>
+                    </Button>
+                    <UpdatePostModal show={showUpdateModal} handleClose={handleCloseUpdateModal} postId={postId} originalPostContent={content} />
+
                 </div>
 
             </Col>

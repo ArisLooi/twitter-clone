@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { Col, Image, Row, Button, Modal, Form, Alert } from "react-bootstrap";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +54,13 @@ export default function AuthPage() {
             setError("Failed to sign in with Google. Please try again."); // Set error message
         }
     }
+
+    const facebookProvider = new FacebookAuthProvider(); const handleFacebookLogin = async (e) => {
+        e.preventDefault(); try { await signInWithPopup(auth, facebookProvider); setError(""); } catch (error) {
+            console.error(error); setError("Failed to sign in with Facebook. Please try again."); // Set error message 
+        }
+    };
+
     const handleClose = () => {
         setModalShow(null);
         setError("");
@@ -99,8 +106,8 @@ export default function AuthPage() {
                     <Button className="rounded-pill" variant="outline-dark" onClick={handleGoogleLogin}>
                         <i className="bi bi-google"></i> Sign up with Google
                     </Button>
-                    <Button className="rounded-pill" variant="outline-dark">
-                        <i className="bi bi-apple"></i> Sign up with Apple
+                    <Button className="rounded-pill" variant="outline-dark" onClick={handleFacebookLogin}>
+                        <i className="bi bi-facebook"></i> Sign up with Facebook
                     </Button>
                     <p style={{ textAlign: "center" }}>or</p>
                     <Button className="rounded-pill" onClick={handleShowSignUp}>Create an account</Button>
