@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc } from "
 import { db, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-// Async think for delete a post
+// Async thunk for delete a post
 export const deletePost = createAsyncThunk(
     "posts/deletePost",
     async ({ userId, postId }) => {
