@@ -27,7 +27,7 @@ export default function AuthPage() {
         e.preventDefault();
         try {
             const res = await createUserWithEmailAndPassword(auth, username, password);
-            console.log(res.user);
+            // console.log(res.user);
         } catch (error) {
             console.error(error);
         };

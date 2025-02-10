@@ -95,7 +95,7 @@ export const savePost = createAsyncThunk(
             }
 
             const postsRef = collection(db, `users/${userId}/posts`);
-            console.log(`users/${userId}/posts`);
+            // console.log(`users/${userId}/posts`);
 
             // Since no ID is given, Firestore auto generate a unique ID for this new document
             const newPostRef = doc(postsRef);
