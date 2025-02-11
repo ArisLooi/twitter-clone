@@ -89,7 +89,7 @@ export const savePost = createAsyncThunk(
             let imageUrl = "";
             console.log(file);
             if (file !== null) {
-                const imageRef = ref(storage, `posts/${file.name}`);
+                const imageRef = ref(storage, `posts/${userId}/${file.name}`);
                 const response = await uploadBytes(imageRef, file);
                 imageUrl = await getDownloadURL(response.ref);
             }
